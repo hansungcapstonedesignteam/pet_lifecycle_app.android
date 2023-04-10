@@ -16,7 +16,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/review2_reivew"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -29,15 +29,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/review_content_edit_text2"
+            android:id="@+id/review2_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="제목"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            android:layout_height="50dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="제목" />
 
         <TextView
-            android:id="@+id/review_date"
+            android:id="@+id/review2_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="작성일"
@@ -45,7 +45,8 @@
             android:textSize="12sp" />
 
         <RatingBar
-            android:id="@+id/review_rating"
+            android:id="@+id/review2_rating"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
@@ -53,21 +54,22 @@
             android:stepSize="0.5" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/review2_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:text="이미지" />
 
         <EditText
-            android:id="@+id/review_content_edit_text3"
+            android:id="@+id/review2_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
+            android:gravity="top"
             android:hint="리뷰를 남겨주세요"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <android.widget.Button
-            android:id="@+id/button13"
+            android:id="@+id/review2_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"

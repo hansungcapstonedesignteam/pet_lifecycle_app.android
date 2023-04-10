@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <android.widget.Button
-            android:id="@+id/button1"
+            android:id="@+id/shop_list_button1"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:layout_weight="1"
@@ -24,7 +24,7 @@
             android:text="사료" />
 
         <android.widget.Button
-            android:id="@+id/button2"
+            android:id="@+id/shop_list_button2"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:layout_weight="1"
@@ -33,7 +33,7 @@
             android:text="간식" />
 
         <android.widget.Button
-            android:id="@+id/button3"
+            android:id="@+id/shop_list_button3"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:layout_weight="1"
@@ -44,7 +44,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/shop_list_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -59,6 +59,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/shop_list_count"
+        tools:listitem="@layout/shop_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
