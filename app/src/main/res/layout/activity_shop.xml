@@ -18,7 +18,6 @@
             android:id="@+id/shop_list_button2"
             android:layout_width="100dp"
             android:layout_height="140dp"
-            android:foreground="@drawable/food_1"
             android:text="Button" />
 
         <Button
@@ -26,7 +25,6 @@
             android:layout_width="100dp"
             android:layout_height="140dp"
             android:layout_marginLeft="20dp"
-            android:foreground="@drawable/snack"
             android:text="Button" />
 
         <Button
@@ -34,7 +32,6 @@
             android:layout_width="100dp"
             android:layout_height="140dp"
             android:layout_marginLeft="20dp"
-            android:foreground="@drawable/toy"
             android:text="Button" />
     </LinearLayout>
 
@@ -44,7 +41,6 @@
         android:layout_height="400dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/dog_food_shop" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
