@@ -16,6 +16,7 @@
             android:textColor="@color/black"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp"
             android:textSize="20dp"
             android:textStyle="bold"/>
 
@@ -44,11 +45,12 @@
             android:text="거리 기록 추가예정"/>
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/frame_hospital_map"
         android:layout_height="500dp"
-        android:gravity="center"
-        android:text="프레그먼트 삽입예정" />
+        android:layout_width="match_parent"
+        />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -69,6 +71,8 @@
             android:textStyle="bold"
             android:textColor="@color/teal_700"/>
         <Button
+            android:textColor="@color/red"
+            android:backgroundTint="@color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
