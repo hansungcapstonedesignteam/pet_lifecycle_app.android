@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="20dp"
+        android:text="내 아이"
+        android:gravity="center_vertical"
+        android:textSize="20dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:paddingLeft="20dp"
+        android:text="반려동물과 건강하게 지내기 위한 앱"
+        android:layout_marginBottom="30dp"
+        />
+
+
+    <ImageButton
+        android:layout_marginLeft="55dp"
+        android:id = "@+id/petImage"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:src="@drawable/retriver"
+        android:scaleType="centerInside"
+        android:background="@color/white"
+        />
+    <TextView
+        android:id="@+id/textImageBelow"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:paddingLeft="50dp"
+        android:textSize="20dp"
+        android:text="이미지 눌러 프로필 변경"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/adoptButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:src="@drawable/paw"
+                android:background="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="입양"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/walkingButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:src="@drawable/walking_the_dog"
+                android:background="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="산책 기록"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/petShopButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:src="@drawable/pet_shop"
+                android:background="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="애견 샵"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id = "@+id/petHospitalButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:src="@drawable/hospital"
+                android:background="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="동물 병원"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
