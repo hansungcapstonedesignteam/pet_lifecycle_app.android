@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:hint="일기를 쓰세요!"
         android:gravity="center"
-        android:layout_height="490dp"/>
+        android:layout_height="450dp"/>
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"

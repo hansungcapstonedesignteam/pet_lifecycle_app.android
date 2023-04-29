@@ -14,7 +14,8 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.MapFragment
 import com.hansung.petlifetimecare.R
 
-class MapWalkActivity : AppCompatActivity() {
+class MapWalkActivity : AppCompatActivity(), LocationUpdatesListener {
+    private lateinit var mapsFragment: MapsFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,16 +25,17 @@ class MapWalkActivity : AppCompatActivity() {
         val startButton = findViewById<Button>(R.id.startButton_walk)
         val endButton = findViewById<Button>(R.id.endButtion_walk)
 
-        startButton.setOnClickListener{
+        startButton.setOnClickListener {
             chronometerView.base = SystemClock.elapsedRealtime()
             chronometerView.start()
+            startLocationUpdates()
         }
 
-        endButton.setOnClickListener{
+        endButton.setOnClickListener {
             chronometerView.stop()
             chronometerView.base = SystemClock.elapsedRealtime()
+            stopLocationUpdates()
         }
-
 
         val requestPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -56,9 +58,17 @@ class MapWalkActivity : AppCompatActivity() {
     }
 
     private fun loadMapFragment() {
+        mapsFragment = MapsFragment()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_walk_map, MapsFragment())
+            .replace(R.id.frame_walk_map, mapsFragment)
             .commit()
     }
-}
 
+    override fun startLocationUpdates() {
+        mapsFragment.startLocationUpdates()
+    }
+
+    override fun stopLocationUpdates() {
+        mapsFragment.stopLocationUpdates()
+    }
+}

@@ -18,14 +18,11 @@
         android:theme="@style/Theme.PetLifetimeCare"
         tools:targetApi="31">
         <activity
-            android:name=".temporyActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".alarmPackage.AlarmActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".alarmPackage.AlarmActivity1"
+            android:exported="true" />
         <activity
             android:name=".mapPackage.MapWalkActivity"
             android:exported="true" />
