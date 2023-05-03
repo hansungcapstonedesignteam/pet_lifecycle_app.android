@@ -11,6 +11,9 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.MapFragment
 import com.hansung.petlifetimecare.R
 
+
+
+
 class MapHospitalActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +42,7 @@ class MapHospitalActivity : AppCompatActivity() {
 
     private fun loadMapFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_hospital_map, MapsFragment())
+            .replace(R.id.frame_hospital_map, Maps2Fragment())
             .commit()
     }
 }
