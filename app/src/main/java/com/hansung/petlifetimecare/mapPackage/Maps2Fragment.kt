@@ -40,39 +40,35 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.StrictMath.pow
+import kotlin.math.*
+import org.locationtech.proj4j.CRSFactory;
+import org.locationtech.proj4j.CoordinateReferenceSystem;
+import org.locationtech.proj4j.CoordinateTransform;
+import org.locationtech.proj4j.CoordinateTransformFactory;
+import org.locationtech.proj4j.ProjCoordinate;
 
-// ...
+private fun tm2LatLng(x: Double, y: Double): LatLng {
+    val proj4KoreaCentral = "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs"
+    val proj4WGS84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
 
-private fun getAddressLatLng(address: String, callback: (LatLng?) -> Unit) {
-    val geoApiContext = GeoApiContext.Builder()
-        .apiKey("AIzaSyAbd81Wz0KsfM4dj9eWMZTwMLvWzEVBtw4")
-        .build()
+    val crsFactory = CRSFactory()
+    val centralKoreaCRS = crsFactory.createFromParameters("centralKorea", proj4KoreaCentral)
+    val wgs84CRS = crsFactory.createFromParameters("WGS84", proj4WGS84)
 
-    CoroutineScope(Dispatchers.Main).launch {
-        val latLng = withContext(Dispatchers.IO) {
-            try {
-                val results: Array<GeocodingResult> = GeocodingApi.geocode(geoApiContext, address).await()
-                if (results.isNotEmpty()) {
-                    LatLng(results[0].geometry.location.lat, results[0].geometry.location.lng)
-                } else {
-                    null
-                }
-            } catch (e: ApiException) {
-                Log.e("GEOCODING_ERROR", "Geocoding API error: ${e.localizedMessage}") // 로그 추가
-                null
-            } catch (e: InterruptedException) {
-                Log.e("GEOCODING_ERROR", "Geocoding interrupted: ${e.localizedMessage}") // 로그 추가
-                null
-            } catch (e: IOException) {
-                Log.e("GEOCODING_ERROR", "Geocoding IO error: ${e.localizedMessage}") // 로그 추가
-                null
-            }
-        }
-        callback(latLng)
-    }
+    val transformFactory = CoordinateTransformFactory()
+    val transform = transformFactory.createTransform(centralKoreaCRS, wgs84CRS)
+
+    val sourceCoordinate = ProjCoordinate(x, y)
+    val targetCoordinate = ProjCoordinate()
+
+    transform.transform(sourceCoordinate, targetCoordinate)
+
+    val modifiedLatitude = targetCoordinate.y + 13.73440940270127
+    val modifiedLongitude = targetCoordinate.x + 7.350789175315489
+
+    return LatLng(modifiedLatitude, modifiedLongitude)
 }
-
-
 
 
 class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
@@ -80,9 +76,10 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
     private lateinit var apiClient: GoogleApiClient
     private var googleMap: GoogleMap? = null
     private val animalHospitalApi = AnimalHospitalApi.create()
-
     companion object {
         private const val TAG = "Maps2Fragment"
+        private const val MIN_ZOOM_LEVEL = 14f
+        private const val MAX_ZOOM_LEVEL = 18f
     }
 
 
@@ -119,7 +116,7 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
         googleMap?.moveCamera(CameraUpdateFactory.newCameraPosition(position))
 
         val markerOptions = MarkerOptions()
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
         markerOptions.position(latLng)
         markerOptions.title("MyLocation")
 
@@ -151,77 +148,54 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
         loadAnimalHospitalMarkers() // 동물병원 위치를 로드합니다.
     }
 
+
+
     private fun loadAnimalHospitalMarkers() {
         val apiKey = "7052706f5371697a3731766b4a634d" // 발급받은 인증키로 변경
-        animalHospitalApi.getAnimalHospitals(apiKey, "json", "LOCALDATA_020301", 1, 100)
-            .enqueue(object : Callback<AnimalHospitalResponse> {
+        animalHospitalApi.getAnimalHospitals(apiKey, "xml", "LOCALDATA_020301", 1, 100, "광진구")
+            .enqueue(object : Callback<LocalData020301> {
                 override fun onResponse(
-                    call: Call<AnimalHospitalResponse>,
-                    response: Response<AnimalHospitalResponse>
+                    call: Call<LocalData020301>,
+                    response: Response<LocalData020301>
                 ) {
                     if (response.isSuccessful) {
-                        val result = response.body()?.result
-                        Log.d(TAG, "API call Result Code: ${result?.code}, Result Message: ${result?.message}") // 요청 결과 코드 및 메시지 로그 출력
+                        val totalCount = response.body()?.listTotalCount
+                        Log.d(TAG, "API call response body: ${response.body()}")
+                        response.body()?.rows?.forEach { hospital ->
+                            hospital.X?.toDoubleOrNull()?.takeIf { it in 0.0..500000.0 }?.let { x ->
+                                hospital.Y?.toDoubleOrNull()?.takeIf { it in 0.0..500000.0 }?.let { y ->
+                                    val latLng = tm2LatLng(x, y)
+                                    Log.d(TAG, "Original X: $x, Original Y: $y")
+                                    Log.d(TAG, "Adding marker for hospital: ${hospital.bplcNm}, latitude: ${latLng.latitude}, longitude: ${latLng.longitude}")
 
-                        Log.d(TAG, "API call successful, response body: ${response.body()}") // 로그 추가
-                        response.body()?.row?.forEach { hospital ->
-                            val latitude = hospital.Y.toDoubleOrNull() // 위도 변환
-                            val longitude = hospital.X.toDoubleOrNull() // 경도 변환
-
-                            if (latitude != null && longitude != null) {
-                                Log.d(TAG, "Adding marker for hospital: ${hospital.BPLCNM}, latitude: $latitude, longitude: $longitude") // 로그 추가
-
-                                val latLng = LatLng(latitude, longitude)
-                                val markerOptions = MarkerOptions().apply {
-                                    position(latLng)
-                                    title(hospital.BPLCNM)
-                                    snippet("전화번호: ${hospital.SITETEL}, 도로명주소: ${hospital.SITEWHLADDR}, 지번주소: ${hospital.RDNWHLADDR}")
-                                    icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                                    val markerOptions = MarkerOptions().apply {
+                                        position(latLng)
+                                        title(hospital.bplcNm)
+                                        snippet("전화번호: ${hospital.siteTel}, 도로명주소: ${hospital.rdnWhlAddr}, 지번주소: ${hospital.siteWhlAddr}")
+                                        icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                                    }
+                                    googleMap?.addMarker(markerOptions)
+                                } ?: run {
+                                    Log.e(TAG, "Invalid Y coordinate for hospital: ${hospital.bplcNm}")
                                 }
-                                googleMap?.addMarker(markerOptions)
-                            } else {
-                                Log.e(TAG, "Invalid coordinates for hospital: ${hospital.BPLCNM}") // 로그 추가
-
+                            } ?: run {
+                                Log.e(TAG, "Invalid X coordinate for hospital: ${hospital.bplcNm}")
                             }
                         }
-                    } else {
-                        Log.e(TAG, "API call failed, response error: ${response.errorBody()}") // 로그 추가
 
+                    } else {
+                        Log.e(TAG, "API call failed, response error: ${response.errorBody()}")
                         // 실패한 경우 에러 처리
                     }
                 }
 
-                override fun onFailure(call: Call<AnimalHospitalResponse>, t: Throwable) {
-                    Log.e(TAG, "API call onFailure, error message: ${t.localizedMessage}") // 로그 추가
-                    // 네트워크 오류 처리
+                override fun onFailure(call: Call<LocalData020301>, t: Throwable) {
+                    Log.e(TAG, "API call onFailure, error message: ${t.localizedMessage}")
+                    t.printStackTrace() // 스택 추적을 출력하여 더 많은 정보를 얻습니다.
                 }
-
             })
-
     }
 
-    private fun getAddressLatLng(address: String): LatLng? {
-        val appContext = context
-        return if (appContext != null) {
-            try {
-                val geocoder = Geocoder(appContext)
-                val addressList = geocoder.getFromLocationName(address, 1)
-
-                if (addressList?.isNotEmpty() == true) {
-                    val location = addressList[0]
-                    LatLng(location.latitude, location.longitude)
-                } else {
-                    null
-                }
-            } catch (e: Exception) {
-                Log.e("GEOCODER_ERROR", "Geocoder error: ${e.localizedMessage}") // 로그 추가
-                e.printStackTrace()
-                null
-            }
-        } else {
-            null
-        }
-    }
 
 
 
@@ -251,6 +225,15 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
                 )
             } == PackageManager.PERMISSION_GRANTED) {
             googleMap.isMyLocationEnabled = true
+        }
+
+        googleMap.setOnCameraIdleListener {
+            val zoomLevel = googleMap.cameraPosition.zoom
+            if (zoomLevel >= MIN_ZOOM_LEVEL && zoomLevel <= MAX_ZOOM_LEVEL) {
+                loadAnimalHospitalMarkers()
+            } else {
+                googleMap.clear()
+            }
         }
     }
 
