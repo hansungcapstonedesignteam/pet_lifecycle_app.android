@@ -1,5 +1,6 @@
 package com.hansung.petlifetimecare.adoptPackage
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hansung.petlifetimecare.R
 
-class GiveFragment : Fragment() {
+class GetFragment : Fragment() {
 
     // Assuming you have some data
     private val giveItemList = listOf(
@@ -23,9 +24,14 @@ class GiveFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_give, container, false)
+        val view = inflater.inflate(R.layout.fragment_get, container, false)
 
-        giveItemAdapter = GiveItemAdapter(giveItemList)
+        giveItemAdapter = GiveItemAdapter(giveItemList, object : GiveItemAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val intent = Intent(activity, AdoptActivity::class.java)
+                startActivity(intent)
+            }
+        })
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewGive)
         recyclerView.layoutManager = LinearLayoutManager(context)

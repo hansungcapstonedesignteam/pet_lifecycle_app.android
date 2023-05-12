@@ -79,7 +79,7 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
     companion object {
         private const val TAG = "Maps2Fragment"
         private const val MIN_ZOOM_LEVEL = 14f
-        private const val MAX_ZOOM_LEVEL = 18f
+        private const val MAX_ZOOM_LEVEL = 30f
     }
 
 
