@@ -2,63 +2,59 @@ package com.hansung.petlifetimecare
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import com.google.android.gms.common.api.internal.LifecycleCallback.getFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hansung.petlifetimecare.community.CommunityFragment
 import com.hansung.petlifetimecare.adoptPackage.AdoptHomeFragment
+import com.hansung.petlifetimecare.databinding.ActivityMainBinding
 import com.hansung.petlifetimecare.searchPackage.SearchFragment
 import com.hansung.petlifetimecare.settingPackage.SettingFragment
 
 // Import other fragments you have
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        val bottomNavigationView: BottomNavigationView = binding.bottomNavigationView
+        setContentView(view)
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-
-        if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                replace(R.id.mainFrame, HomeFragment::class.java, null)
-            }
-        }
-
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when(item.itemId) {
                 R.id.menu_home -> {
-                    supportFragmentManager.commit {
-                        setReorderingAllowed(true)
-                        replace(R.id.mainFrame, HomeFragment::class.java, null)
-                    }
+                    val fragment = HomeFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.mainFrame, fragment).commit()
+                    true
                 }
                 R.id.menu_search -> {
-                    supportFragmentManager.commit {
-                        setReorderingAllowed(true)
-                        replace(R.id.mainFrame, SearchFragment::class.java, null) // Replace with actual SearchFragment
-                    }
+                    val fragment = SearchFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.mainFrame, fragment).commit()
+                    true
                 }
                 R.id.menu_community -> {
-                    supportFragmentManager.commit {
-                        setReorderingAllowed(true)
-                        replace(R.id.mainFrame, CommunityFragment::class.java, null)
-                    }
+                    val fragment = CommunityFrontFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.mainFrame, fragment).commit()
+                    true
                 }
 //                R.id.menu_notifications -> {
-//                    supportFragmentManager.commit {
-//                        setReorderingAllowed(true)
-//                        replace(R.id.mainFrame, NotificationsFragment::class.java, null) // Replace with actual NotificationsFragment
-//                    }
+//                    TODO("Notification Fragment 미완성")
+//                    val fragment =
+//                    supportFragmentManager.beginTransaction().replace(R.id.mainFrame, fragment).commit()
+//                    true
 //                }
                 R.id.menu_settings -> {
-                    supportFragmentManager.commit {
-                        setReorderingAllowed(true)
-                        replace(R.id.mainFrame, SettingFragment::class.java, null) // Replace with actual SettingsFragment
-                    }
+                    val fragment = SettingFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.mainFrame, fragment).commit()
+                    true
                 }
+                else -> false
             }
-            true
         }
+
+        supportFragmentManager.beginTransaction().replace(R.id.mainFrame, HomeFragment()).commit()
     }
 }
