@@ -18,6 +18,16 @@
         android:theme="@style/Theme.PetLifetimeCare"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service
+            android:name=".mapPackage.LocationUpdatesService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <receiver
+            android:name=".mapPackage.ScreenOffBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".adoptPackage.AdoptActivity"
             android:exported="false" />

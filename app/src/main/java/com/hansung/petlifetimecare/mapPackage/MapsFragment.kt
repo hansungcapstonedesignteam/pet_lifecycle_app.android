@@ -1,7 +1,9 @@
 package com.hansung.petlifetimecare.mapPackage
 
-
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
@@ -12,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
@@ -33,6 +36,17 @@ class MapsFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApiC
     private lateinit var polylineOptions: PolylineOptions
     private lateinit var polyline: Polyline
 
+    private val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val latitude = intent?.getDoubleExtra("Latitude", 0.0)
+            val longitude = intent?.getDoubleExtra("Longitude", 0.0)
+            val newLatLng = LatLng(latitude ?: 0.0, longitude ?: 0.0)
+            polylineOptions.add(newLatLng)
+            polyline.points = polylineOptions.points
+            moveMap(latitude ?: 0.0, longitude ?: 0.0)
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
@@ -50,6 +64,16 @@ class MapsFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApiC
             .addOnConnectionFailedListener(this)
             .build()
         apiClient.connect()
+
+        LocalBroadcastManager.getInstance(requireActivity()).registerReceiver(
+            receiver,
+            IntentFilter("LocationUpdate")
+        )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        LocalBroadcastManager.getInstance(requireActivity()).unregisterReceiver(receiver)
     }
 
     private fun moveMap(latitude: Double, longitude: Double) {
@@ -72,7 +96,6 @@ class MapsFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApiC
         // Add a new marker and save its reference
         currentMarker = googleMap?.addMarker(markerOptions)
     }
-
 
     override fun onConnected(bundle: Bundle?) {
         if (context?.let { ContextCompat.checkSelfPermission(it, android.Manifest.permission.ACCESS_FINE_LOCATION) } == PackageManager.PERMISSION_GRANTED) {
@@ -130,13 +153,10 @@ class MapsFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApiC
             }
         }
     }
-
-
-
-
 }
 
 interface LocationUpdatesListener {
     fun startLocationUpdates()
     fun stopLocationUpdates()
 }
+

@@ -39,10 +39,12 @@
         android:layout_weight="1"
         android:textStyle="bold"/>
         <TextView
+            android:id="@+id/distance_text_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textSize="40dp"
             android:layout_weight="1"
-            android:text="거리기록 나중에 추가예정"/>
+            android:text="거리 기록"/>
     </LinearLayout>
 
     <FrameLayout
