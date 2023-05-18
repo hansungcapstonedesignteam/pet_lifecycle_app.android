@@ -10,4 +10,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="divider_color">#808080</color>
+    <color name="project_color">#FFEBB7</color>
 </resources>
