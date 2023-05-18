@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <Spinner
-            android:id="@+id/spinner3"
+            android:id="@+id/spinner_board"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/recyclerView2"
@@ -26,7 +26,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner3" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_board" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

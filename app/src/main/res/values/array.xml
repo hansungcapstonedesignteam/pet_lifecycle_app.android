@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="community_array">
+        <item>자유게시판</item>
+        <item>질문게시판</item>
+        <item>분양게시판</item>
+    </string-array>
+</resources>
