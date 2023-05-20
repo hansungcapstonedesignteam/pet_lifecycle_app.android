@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "216478641711",
+    "project_id": "pet-lifecycle-care",
+    "storage_bucket": "pet-lifecycle-care.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216478641711:android:f0c1329fd2a369da7c20da",
+        "android_client_info": {
+          "package_name": "com.hansung.petlifetimecare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "216478641711-34m8ha8ub5967roir7g1ovkr996o4se1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeIVAIbg9SrWAgfY1Y3q40490XzgyqXj8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "216478641711-34m8ha8ub5967roir7g1ovkr996o4se1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
