@@ -46,11 +46,11 @@ class MainActivity : AppCompatActivity() {
 //                    supportFragmentManager.beginTransaction().replace(R.id.mainFrame, fragment).commit()
 //                    true
 //                }
-                R.id.menu_settings -> {
-                    val fragment = SettingFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.mainFrame, fragment).commit()
-                    true
-                }
+//                R.id.menu_settings -> {
+//                    val fragment = SettingFragment()
+//                    supportFragmentManager.beginTransaction().replace(R.id.mainFrame, fragment).commit()
+//                    true
+//                }
                 else -> false
             }
         }
