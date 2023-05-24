@@ -93,11 +93,11 @@ class SearchFragment : Fragment() {
 
 
     fun callAPI(question: String) {
-        val modifiedQuestion = "$question\n한 문장으로 답변해줘. 그리고 애견 상담 기능을 해줘"
+        val modifiedQuestion = "$question\n최대 두 문장으로 답변해줘,한 번에 하나의 사실만 알려줘. 가능하다면 단답형으로 대답해줘. 그리고 애견 상담 기능을 해줘"
         val jsonBody = JSONObject().apply {
             put("model", "text-davinci-003")
             put("prompt", modifiedQuestion)
-            put("max_tokens", 200)
+            put("max_tokens", 300)
             put("temperature", 0.5)
         }
 
@@ -114,8 +114,10 @@ class SearchFragment : Fragment() {
                   try {
                       val jsonObject = JSONObject(response.body?.string() ?: "")
                       val jsonArray = jsonObject.getJSONArray("choices")
-                      val result = jsonArray.getJSONObject(0).getString("text")
-                      addResponse(result.trim())
+                      val result = jsonArray.getJSONObject(0).getString("text").trim() // trim to remove leading and trailing spaces
+                      val cleanResult = result.replace("\\s+".toRegex(), " ") // replace consecutive spaces with a single space
+                      addResponse(cleanResult)
+
                   } catch (e: JSONException) {
                       e.printStackTrace()
                   }
