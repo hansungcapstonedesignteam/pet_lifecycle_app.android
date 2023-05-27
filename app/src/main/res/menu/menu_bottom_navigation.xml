@@ -7,17 +7,9 @@
     <item
         android:id="@+id/menu_search"
         android:icon="@drawable/baseline_search_24"
-        android:title="검색" />
+        android:title="챗봇" />
     <item
         android:id="@+id/menu_community"
         android:icon="@drawable/baseline_article_24"
         android:title="커뮤니티" />
-    <item
-        android:id="@+id/menu_notifications"
-        android:icon="@drawable/baseline_notifications_24"
-        android:title="알림" />
-    <item
-        android:id="@+id/menu_settings"
-        android:icon="@drawable/baseline_settings_24"
-        android:title="설정" />
 </menu>

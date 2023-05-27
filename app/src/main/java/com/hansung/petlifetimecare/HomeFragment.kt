@@ -23,12 +23,12 @@ import org.w3c.dom.Text
 
 class HomeFragment : Fragment() {
 
-    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent())
-    { uri: Uri? ->
-        if (uri != null) {
-            loadImageIntoImageButton(uri)
-        }
-    }
+//    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent())
+//    { uri: Uri? ->
+//        if (uri != null) {
+//            loadImageIntoImageButton(uri)
+//        }
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,12 +36,12 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        val petImageButton: ImageButton = view.findViewById(R.id.petImage)
-        petImageButton.setOnClickListener {
-            getContent.launch("image/*")
-            val belowText : TextView = view.findViewById(R.id.textImageBelow)
-            belowText.text = ""
-        }
+//        val petImageButton: ImageButton = view.findViewById(R.id.petImage)
+//        petImageButton.setOnClickListener {
+//            getContent.launch("image/*")
+//            val belowText : TextView = view.findViewById(R.id.textImageBelow)
+//            belowText.text = ""
+//        }
 
         val walkingPetButton : ImageButton = view.findViewById(R.id.walkingButton)
         walkingPetButton.setOnClickListener{
@@ -70,10 +70,10 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    private fun loadImageIntoImageButton(uri: Uri) {
-        val petImageButton: ImageButton = requireView().findViewById(R.id.petImage)
-        setImageToImageButton(uri, 700, 450, petImageButton)
-    }
+//    private fun loadImageIntoImageButton(uri: Uri) {
+//        val petImageButton: ImageButton = requireView().findViewById(R.id.petImage)
+//        setImageToImageButton(uri, 700, 450, petImageButton)
+//    }
 
     private fun setImageToImageButton(uri: Uri, targetWidth: Int, targetHeight: Int, imageButton: ImageButton) {
         val inputStream = requireActivity().contentResolver.openInputStream(uri)

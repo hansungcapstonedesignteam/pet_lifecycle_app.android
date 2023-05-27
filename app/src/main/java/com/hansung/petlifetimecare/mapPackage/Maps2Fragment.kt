@@ -27,6 +27,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.location.Geocoder
+import android.location.Location.distanceBetween
 import android.util.Log
 import androidx.core.content.ContentProviderCompat.requireContext
 
@@ -49,7 +50,7 @@ import org.locationtech.proj4j.CoordinateTransformFactory;
 import org.locationtech.proj4j.ProjCoordinate;
 
 private fun tm2LatLng(x: Double, y: Double): LatLng {
-    val proj4KoreaCentral = "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs"
+    val proj4KoreaCentral = "+proj=tmerc +lat_0=38 +lon_0=127.0028902777778 +k=1 +x_0=200000 +y_0=500000 +ellps=bessel +units=m +no_defs +towgs84=-115.80,474.99,674.11,1.16,-2.31,-1.63,6.43"
     val proj4WGS84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
 
     val crsFactory = CRSFactory()
@@ -64,8 +65,8 @@ private fun tm2LatLng(x: Double, y: Double): LatLng {
 
     transform.transform(sourceCoordinate, targetCoordinate)
 
-    val modifiedLatitude = targetCoordinate.y + 13.73440940270127
-    val modifiedLongitude = targetCoordinate.x + 7.350789175315489
+    val modifiedLatitude = targetCoordinate.y
+    val modifiedLongitude = targetCoordinate.x
 
     return LatLng(modifiedLatitude, modifiedLongitude)
 }
@@ -79,7 +80,7 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
     companion object {
         private const val TAG = "Maps2Fragment"
         private const val MIN_ZOOM_LEVEL = 14f
-        private const val MAX_ZOOM_LEVEL = 30f
+        private const val MAX_ZOOM_LEVEL = 50f
     }
 
 
@@ -123,6 +124,8 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
         googleMap?.addMarker(markerOptions)
     }
 
+    private var lastKnownLocation: Location? = null
+
     override fun onConnected(bundle: Bundle?) {
         if (context?.let {
                 ContextCompat.checkSelfPermission(
@@ -138,6 +141,7 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
                             val latitude = location.latitude
                             val longitude = location.longitude
                             moveMap(latitude, longitude)
+                            lastKnownLocation = location
                         }
                     }
                 }
@@ -147,6 +151,7 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
 
         loadAnimalHospitalMarkers() // 동물병원 위치를 로드합니다.
     }
+
 
 
 
@@ -226,7 +231,6 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
             } == PackageManager.PERMISSION_GRANTED) {
             googleMap.isMyLocationEnabled = true
         }
-
         googleMap.setOnCameraIdleListener {
             val zoomLevel = googleMap.cameraPosition.zoom
             if (zoomLevel >= MIN_ZOOM_LEVEL && zoomLevel <= MAX_ZOOM_LEVEL) {
@@ -235,6 +239,33 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
                 googleMap.clear()
             }
         }
+        googleMap.setOnMarkerClickListener { marker ->
+            val phoneNumber = marker.snippet!!.split("전화번호: ")[1].split(",")[0] // 마커의 snippet에서 전화번호를 추출
+            val hospitalName = marker.title // 마커의 title에서 병원 이름을 가져옵니다.
+
+            // MainActivity에게 전화번호와 병원 이름을 전달
+            (activity as? MapHospitalActivity)?.apply {
+                updatePhoneNumber(phoneNumber)
+                if (hospitalName != null) {
+                    updateHospitalName(hospitalName)
+                } // 병원 이름을 전달합니다.
+            }
+
+            // 거리 업데이트
+            lastKnownLocation?.let { location ->
+                val markerPosition = marker.position
+                val distance = distanceBetween(location.latitude, location.longitude, markerPosition.latitude, markerPosition.longitude)
+                (activity as? MapHospitalActivity)?.updateDistance(distance)
+            }
+            marker.showInfoWindow() // 이 부분을 추가합니다.
+            true
+        }
+
+    }
+    private fun distanceBetween(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Float {
+        val results = FloatArray(1)
+        Location.distanceBetween(lat1, lon1, lat2, lon2, results)
+        return results[0]
     }
 
 }

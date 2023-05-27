@@ -4,6 +4,7 @@ package com.hansung.petlifetimecare.mapPackage
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +40,19 @@ class MapHospitalActivity : AppCompatActivity() {
             loadMapFragment()
         }
     }
+    fun updateDistance(distance: Float) {
+        val distanceText: TextView = findViewById(R.id.distance_text)
+        distanceText.text = "거리: ${distance}m" // 거리를 미터로 표시
+    }
+    fun updateHospitalName(hospitalName: String) {
+        val hospitalNameText: TextView = findViewById(R.id.hospitalName)
+        hospitalNameText.text = hospitalName
+    }
 
+    fun updatePhoneNumber(phoneNumber: String) {
+        val phoneText: TextView = findViewById(R.id.phone_text)
+        phoneText.text = "전화: $phoneNumber"
+    }
     private fun loadMapFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame_hospital_map, Maps2Fragment())

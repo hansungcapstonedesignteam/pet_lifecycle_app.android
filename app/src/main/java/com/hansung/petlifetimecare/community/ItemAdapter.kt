@@ -23,8 +23,8 @@ class ItemAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemAdap
         val imageView: ImageView = view.findViewById(R.id.itemImage)
         val titleView: TextView = view.findViewById(R.id.itemTitle)
         val contentView: TextView = view.findViewById(R.id.itemContent)
-        val breedView: TextView = view.findViewById(R.id.itemBreed)
-        val dateView: TextView = view.findViewById(R.id.itemDate)
+//        val breedView: TextView = view.findViewById(R.id.itemBreed)
+//        val dateView: TextView = view.findViewById(R.id.itemDate)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -39,8 +39,8 @@ class ItemAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemAdap
         holder.imageView.setImageResource(item.image)
         holder.titleView.text = item.title
         holder.contentView.text = item.content
-        holder.breedView.text = item.breed
-        holder.dateView.text = item.date
+//        holder.breedView.text = item.breed
+//        holder.dateView.text = item.date
     }
 
     override fun getItemCount() = items.size
