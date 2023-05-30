@@ -247,7 +247,7 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
             val hospitalName = marker.title // 마커의 title에서 병원 이름을 가져옵니다.
             val address = marker.snippet!!.split("도로명주소: ")[1].split(",")[0]
             val random = Random.Default
-            val rating = random.nextInt(0, 11) * 0.5f
+            val rating = random.nextInt(5, 11) * 0.5f
 
             // MainActivity에게 전화번호와 병원 이름을 전달
             (activity as? MapHospitalActivity)?.apply {

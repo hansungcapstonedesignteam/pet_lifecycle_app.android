@@ -79,6 +79,7 @@ class SearchFragment : Fragment() {
     }
 
     fun addResponse(response: String){
+        messageList?.removeAt(messageList!!.size - 1)
         addToChat(response,Message.SENT_BY_BOT)
     }
 
@@ -93,7 +94,9 @@ class SearchFragment : Fragment() {
 
 
     fun callAPI(question: String) {
-        val modifiedQuestion = "$question\n최대 두 문장으로 답변해줘,한 번에 하나의 사실만 알려줘. 가능하다면 단답형으로 대답해줘. 그리고 애견 상담 기능을 해줘"
+        messageList?.add(Message("답변 하는중...",Message.SENT_BY_BOT))
+
+        val modifiedQuestion = "$question\n- Please answer no more than 3 sentences, Give me a dog consultation"
         val jsonBody = JSONObject().apply {
             put("model", "text-davinci-003")
             put("prompt", modifiedQuestion)

@@ -14,7 +14,7 @@ class MapPetShopActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_list)
 
-        val viewPager: ViewPager = findViewById(R.id.viewPager)
+        val viewPager: ViewPager = findViewById(R.id.viewPager2)
         val tabLayout: TabLayout = findViewById(R.id.tabs2)
 
         val adapter = ViewPagerAdapter(supportFragmentManager)
