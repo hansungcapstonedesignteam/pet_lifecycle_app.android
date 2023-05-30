@@ -9,16 +9,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
-import com.bumptech.glide.Glide
 import com.hansung.petlifetimecare.adoptPackage.AdoptHomeFragment
 import com.hansung.petlifetimecare.mapPackage.MapHospitalActivity
+import com.hansung.petlifetimecare.petShopPackage.MapPetShopActivity
 import com.hansung.petlifetimecare.mapPackage.MapWalkActivity
-import org.w3c.dom.Text
 
 
 class HomeFragment : Fragment() {
@@ -56,6 +51,12 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+        val petShopButton: ImageButton = view.findViewById(R.id.petShopButton)
+        petShopButton.setOnClickListener {
+            val intent = Intent(requireActivity(), MapPetShopActivity::class.java)
+            startActivity(intent)
+        }
+
         val adoptButton : ImageButton = view.findViewById(R.id.adoptButton)
         adoptButton.setOnClickListener{
             val toAdoptHomeFragment = AdoptHomeFragment()
@@ -67,6 +68,18 @@ class HomeFragment : Fragment() {
             transaction.commit()
         }
 
+/*
+        val petShopButton: ImageButton = view.findViewById(R.id.petShopButton)
+        petShopButton.setOnClickListener {
+            val toPetShopFragment = ShopFragment()
+            val fragmentManager = parentFragmentManager
+
+            val transaction = fragmentManager.beginTransaction()
+            transaction.replace(R.id.mainFrame, toPetShopFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+*/
         return view
     }
 

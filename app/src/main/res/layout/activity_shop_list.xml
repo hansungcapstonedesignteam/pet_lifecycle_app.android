@@ -7,59 +7,36 @@
     android:background="@color/white"
     android:backgroundTint="@color/white">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/teal_200"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <android.widget.Button
-            android:id="@+id/shop_list_button1"
+        <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:background="@color/teal_200"
-            android:backgroundTint="@color/teal_200"
+            android:layout_height="wrap_content"
             android:text="사료" />
 
-        <android.widget.Button
-            android:id="@+id/shop_list_button2"
+        <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:background="@color/teal_200"
-            android:backgroundTint="@color/teal_200"
+            android:layout_height="wrap_content"
             android:text="간식" />
 
-        <android.widget.Button
-            android:id="@+id/shop_list_button3"
+        <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:background="@color/teal_200"
-            android:backgroundTint="@color/teal_200"
+            android:layout_height="wrap_content"
             android:text="용품" />
+    </com.google.android.material.tabs.TabLayout>
 
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/shop_list_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="총 N개 상품"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shop_list_count"
-        tools:listitem="@layout/shop_item" />
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/tabs2"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

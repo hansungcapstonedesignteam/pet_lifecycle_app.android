@@ -55,6 +55,11 @@
         <activity
             android:name=".mapPackage.MapHospitalActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".petShopPackage.MapPetShopActivity"
+            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
