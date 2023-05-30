@@ -1,6 +1,7 @@
 package com.hansung.petlifetimecare.mapPackage
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
@@ -29,6 +30,7 @@ import retrofit2.Response
 import android.location.Geocoder
 import android.location.Location.distanceBetween
 import android.util.Log
+import android.widget.TextView
 import androidx.core.content.ContentProviderCompat.requireContext
 
 import com.google.maps.GeoApiContext
@@ -43,11 +45,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.StrictMath.pow
 import kotlin.math.*
-import org.locationtech.proj4j.CRSFactory;
-import org.locationtech.proj4j.CoordinateReferenceSystem;
-import org.locationtech.proj4j.CoordinateTransform;
-import org.locationtech.proj4j.CoordinateTransformFactory;
-import org.locationtech.proj4j.ProjCoordinate;
+import org.locationtech.proj4j.CRSFactory
+import org.locationtech.proj4j.CoordinateReferenceSystem
+import org.locationtech.proj4j.CoordinateTransform
+import org.locationtech.proj4j.CoordinateTransformFactory
+import org.locationtech.proj4j.ProjCoordinate
+import kotlin.random.Random
 
 private fun tm2LatLng(x: Double, y: Double): LatLng {
     val proj4KoreaCentral = "+proj=tmerc +lat_0=38 +lon_0=127.0028902777778 +k=1 +x_0=200000 +y_0=500000 +ellps=bessel +units=m +no_defs +towgs84=-115.80,474.99,674.11,1.16,-2.31,-1.63,6.43"
@@ -242,6 +245,9 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
         googleMap.setOnMarkerClickListener { marker ->
             val phoneNumber = marker.snippet!!.split("전화번호: ")[1].split(",")[0] // 마커의 snippet에서 전화번호를 추출
             val hospitalName = marker.title // 마커의 title에서 병원 이름을 가져옵니다.
+            val address = marker.snippet!!.split("도로명주소: ")[1].split(",")[0]
+            val random = Random.Default
+            val rating = random.nextInt(0, 11) * 0.5f
 
             // MainActivity에게 전화번호와 병원 이름을 전달
             (activity as? MapHospitalActivity)?.apply {
@@ -255,17 +261,23 @@ class Maps2Fragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApi
             lastKnownLocation?.let { location ->
                 val markerPosition = marker.position
                 val distance = distanceBetween(location.latitude, location.longitude, markerPosition.latitude, markerPosition.longitude)
-                (activity as? MapHospitalActivity)?.updateDistance(distance)
+                val distanceInInt = distance.toInt()
+                (activity as? MapHospitalActivity)?.updateDistance(distanceInInt)
             }
-            marker.showInfoWindow() // 이 부분을 추가합니다.
+            marker.showInfoWindow() // 마커 정보창이 보여지게 함
+            if (hospitalName != null) {
+                (activity as? MapHospitalActivity)?.handleMarkerClick(phoneNumber, hospitalName, address, rating)
+            }
+
             true
         }
 
     }
     private fun distanceBetween(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Float {
         val results = FloatArray(1)
-        Location.distanceBetween(lat1, lon1, lat2, lon2, results)
+        distanceBetween(lat1, lon1, lat2, lon2, results)
         return results[0]
     }
+
 
 }

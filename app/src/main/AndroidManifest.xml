@@ -18,10 +18,14 @@
         android:theme="@style/Theme.PetLifetimeCare"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".mapPackage.HospitalDetailActivity"
+            android:exported="false" />
+
         <service
             android:name=".mapPackage.LocationUpdatesService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <receiver
             android:name=".mapPackage.ScreenOffBroadcastReceiver"
