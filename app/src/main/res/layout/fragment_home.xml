@@ -180,10 +180,10 @@
                     <TextView
                         android:id="@+id/textView11"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_margin="10dp"
-                        android:text="파라인플루엔자(Parainfluenza) 백신 20일 후"
-                        android:textAlignment="center"
+                        android:text="파라인플루엔자 백신 20일 후"
+                        android:textAlignment="viewStart"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold" />

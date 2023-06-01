@@ -7,14 +7,16 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="660dp" />
+
     <TextView
+        android:id="@+id/welcome_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/welcome_text"
         android:layout_centerInParent="true"
-        android:text="PetLifeTimeCare\n App"
         android:gravity="center"
-        android:textSize="28dp"/>
+        android:text="PetLifeTimeCare"
+        android:textSize="28dp"
+        android:textStyle="italic" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,15 +26,14 @@
         android:id="@+id/bottom_layout">
 
         <EditText
+            android:id="@+id/massage_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/massage_edit_text"
             android:layout_centerInParent="true"
-            android:hint="펫과 관련된 질문을 해주세요"
-            android:padding="16dp"
             android:layout_toLeftOf="@+id/send_btn"
             android:background="@drawable/rounded_corner"
-            />
+            android:hint="펫과 관련된 질문을 해주세요"
+            android:padding="16dp" />
         <ImageButton
             android:layout_width="48dp"
             android:layout_height="48dp"
