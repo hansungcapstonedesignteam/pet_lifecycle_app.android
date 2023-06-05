@@ -9,6 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hansung.petlifetimecare.community.CommunityFragment
 import com.hansung.petlifetimecare.adoptPackage.AdoptHomeFragment
 import com.hansung.petlifetimecare.databinding.ActivityMainBinding
+import com.hansung.petlifetimecare.dogChoicePackage.StartDogFragment
 import com.hansung.petlifetimecare.searchPackage.SearchFragment
 import com.hansung.petlifetimecare.settingPackage.SettingFragment
 
@@ -37,6 +38,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.menu_community -> {
                     val fragment = CommunityFrontFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.mainFrame, fragment).commit()
+                    true
+                }
+                R.id.menu_choice -> {
+                    val fragment = StartDogFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.mainFrame, fragment).commit()
                     true
                 }
