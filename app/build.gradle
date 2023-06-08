@@ -21,6 +21,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
+
+        buildConfigField 'String', 'API_KEY', "\"${getProperty("api_key", "")}\""
     }
 
     buildTypes {
@@ -94,4 +96,13 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.4.2')
     implementation 'com.google.firebase:firebase-storage-ktx'
 
+}
+
+def getProperty(String propertyKey, String defaultValue) {
+    if (project.rootProject.file('local.properties').exists()) {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        return properties.getProperty(propertyKey, defaultValue)
+    }
+    return defaultValue
 }

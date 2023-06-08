@@ -21,6 +21,8 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import com.hansung.petlifetimecare.BuildConfig
+
 
 
 class SearchFragment : Fragment() {
@@ -107,7 +109,7 @@ class SearchFragment : Fragment() {
         val body = jsonBody.toString().toRequestBody(JSON)
         val request = Request.Builder()
             .url("https://api.openai.com/v1/completions")
-            .header("Authorization","Bearer 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")
+            .header("Authorization", "Bearer " + BuildConfig.API_KEY)
             .post(body)
             .build()
 
