@@ -11,10 +11,16 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hansung.petlifetimecare.databinding.ActivityAdopt1Binding
 
-class AdoptHomeFragment : Fragment() {
+interface FragmentChangeListener {
+    fun switchFragment(index: Int)
+}
+class AdoptHomeFragment : Fragment(),FragmentChangeListener {
     private var _binding: ActivityAdopt1Binding? = null
     private val binding get() = _binding!!
 
+    override fun switchFragment(index: Int) {
+        binding.viewPager.currentItem = index
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +48,7 @@ class AdoptHomeFragment : Fragment() {
         TabLayoutMediator(binding.tabs, binding.viewPager) { ta, position ->
             ta.text = when (position) {
                 0 -> "입양 받기"
-                1 -> "입양시키기"
+                1 -> "분양 하기"
                 2 -> "HELP"
                 else -> throw IndexOutOfBoundsException()
             }

@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.LinearLayout
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -28,13 +28,29 @@ class CommunityFrontFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         database = Firebase.database
-        val myRef = database.getReference("board")
-        val key = myRef.push().key.toString()
-        myRef.child(key).setValue(BoardModel(0, "Test 제목", "테스트 용 내용입니다", "ㅇㅇ", 1234))
+        contentAdapter = ContentAdapter(contentList)
 
-        for (i in 1..10) {
-            contentList.add(BoardModel(i, "Test$i", "Test 내용$i", i.toString(), 9122+i))
-        }
+        database.getReference("board").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                contentList.clear()
+                snapshot.children.forEach {
+                    val boardModel = it.getValue(BoardModel::class.java)
+                    boardModel?.let { model -> contentList.add(0, model) }
+                }
+                contentAdapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // DB 읽기 실패 시 처리
+                Toast.makeText(context, "Failed to load data: ${error.message}", Toast.LENGTH_LONG).show()
+            }
+        })
+//        val key = myRef.push().key.toString()
+//        myRef.child(key).setValue(BoardModel(0, "Test 제목", "테스트 용 내용입니다", "ㅇㅇ", 1234))
+
+//        for (i in 1..10) {
+//            contentList.add(BoardModel(i, "Test$i", "Test 내용$i", i.toString(), 9122+i))
+//        }
 
         contentAdapter = ContentAdapter(contentList)
 //        binding.communityRecyclerview.adapter = contentAdapter
@@ -63,6 +79,13 @@ class CommunityFrontFragment : Fragment() {
 //        val view = inflater.inflate(R.layout.fragment_community_front, container, false)
         val spinner: Spinner = _binding!!.spinnerBoard
 
+        binding.floatingActionButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.mainFrame, CommunityWriteFragment())  // container는 Fragment가 표시될 레이아웃의 ID입니다.
+                .addToBackStack(null)
+                .commit()
+        }
+
         // 게시판 선택을 위한 Spinner Array 연결
         ArrayAdapter.createFromResource(
             requireContext(),
@@ -70,9 +93,17 @@ class CommunityFrontFragment : Fragment() {
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
+            binding.spinnerBoard.adapter = adapter
         }
 
+        binding.communityRecyclerview.adapter = contentAdapter
+        binding.communityRecyclerview.layoutManager = LinearLayoutManager(context)
+
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -107,7 +107,7 @@ class SearchFragment : Fragment() {
         val body = jsonBody.toString().toRequestBody(JSON)
         val request = Request.Builder()
             .url("https://api.openai.com/v1/completions")
-            .header("Authorization","Bearer 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")
+            .header("Authorization","Bearer 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")
             .post(body)
             .build()
 

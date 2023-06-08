@@ -18,7 +18,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.MapFragment
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.hansung.petlifetimecare.R
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MapWalkActivity : AppCompatActivity(), LocationUpdatesListener {
     private lateinit var mapsFragment: MapsFragment
@@ -40,10 +44,20 @@ class MapWalkActivity : AppCompatActivity(), LocationUpdatesListener {
         val endButton = findViewById<Button>(R.id.endButtion_walk)
 
         startButton.setOnClickListener {
+            val currentTime = System.currentTimeMillis()
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val formattedDate = dateFormat.format(Date(currentTime))
+
+            // Save the formattedDate to Firebase
+            val database = Firebase.database
+            val myRef = database.getReference("walkStartTime")
+            myRef.setValue(formattedDate)
+
             chronometerView.base = SystemClock.elapsedRealtime()
             chronometerView.start()
             startLocationUpdates()
         }
+
 
         endButton.setOnClickListener {
             chronometerView.stop()

@@ -10,6 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TextView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.hansung.petlifetimecare.adoptPackage.AdoptHomeFragment
 import com.hansung.petlifetimecare.mapPackage.MapHospitalActivity
 import com.hansung.petlifetimecare.petShopPackage.MapPetShopActivity
@@ -99,6 +105,31 @@ class HomeFragment : Fragment() {
         return Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Firebase reference
+        val database = Firebase.database
+        val myRef = database.getReference("walkStartTime")
+
+        val dateTextView: TextView = view.findViewById(R.id.textView15)
+
+        // Attach a listener to read the data at our posts reference
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val date = dataSnapshot.getValue(String::class.java)
+                date?.let {
+                    dateTextView.text = it
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                println("loadPost:onCancelled ${databaseError.toException()}")
+            }
+        })
+
+        //... rest of your code
+    }
 
 
 }

@@ -1,9 +1,10 @@
 package com.hansung.petlifetimecare
 
-data class BoardModel (
-    val contentsId: Int,
-    val title: String = "",
-    val contents: String = "",
-    val userName: String = "",
-    val userPassword: Int
+data class BoardModel(
+    var id: Int = 0,
+    var title: String = "",
+    var content: String = "",
+    var writer: String = "",
+    var time: Long = 0,
+    val imageUrl: String? = null
 )
